@@ -29,6 +29,13 @@ jobs:
       - name: Install deps
         run: pip install requests
 
+      - name: Restore token state
+        uses: actions/cache/restore@v4
+        with:
+          path: lb_refresh_tokens.json
+          key: lobsterai-store-${{ github.run_id }}
+          restore-keys: |
+            lobsterai-store-
       - name: Run LobsterAI Checkin
         env:
           LOBSTERAI_TOKEN: ${{ secrets.LOBSTERAI_TOKEN }}
@@ -49,3 +56,9 @@ jobs:
             git commit -m "chore: 更新令牌状态 [skip ci]"
             git push
           fi
+      - name: Save token state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: lb_refresh_tokens.json
+          key: lobsterai-store-${{ github.run_id }}
