@@ -12,7 +12,7 @@
    🔄 版本自动获取  从官方更新接口拉当前客户端版本（带 TTL 缓存），失败用兜底
    ✅ 幂等安全     已签到 / 活动未投放 / 未发放 三种情况都不会误计
    📋 结果复核     签到后再拉一次 context，只有 claimedToday 确实变化才算成功
-   📢 推送通知     可选 PUSHPLUS_TOKEN，运行结果推送到微信
+   📢 推送通知     可选 WECOM_WEBHOOK / PUSHPLUS_TOKEN，运行结果推送到微信
    🔐 Token 自动续期 AT 快过期时用 RT 自动刷新（离线续期，无需浏览器）
    🧩 青龙友好     支持环境变量 LOBSTERAI_TOKEN 直接填账号，无需 auths 目录
 
@@ -470,7 +470,31 @@ def run_account(idx, acc, base):
 
 
 # ─────────────────── 推送 ───────────────────
+def send_wecom(title, content):
+    """企业微信群机器人推送；未配置 WECOM_WEBHOOK 则跳过（支持完整 URL 或仅 key）。"""
+    hook = os.environ.get("WECOM_WEBHOOK", "").strip()
+    if not hook:
+        return False
+    if not hook.startswith("http"):
+        hook = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + hook
+    msg = "%s\n%s" % (title, content)
+    if len(msg.encode("utf-8")) > 2000:
+        msg = msg.encode("utf-8")[:1900].decode("utf-8", "ignore") + "\n...(内容过长已截断)"
+    try:
+        r = requests.post(hook, json={"msgtype": "text", "text": {"content": msg}}, timeout=20)
+        d = r.json()
+        if d.get("errcode") == 0:
+            print("📢 企业微信推送成功")
+            return True
+        print("📢 企业微信推送失败: %s" % str(d.get("errmsg", ""))[:80])
+    except Exception as e:
+        print("📢 企业微信异常: %s" % str(e)[:80])
+    return False
+
+
 def send_notify(title, content):
+    if send_wecom(title, content):
+        return True
     token = os.environ.get("PUSHPLUS_TOKEN", "").strip()
     if not token:
         return False
