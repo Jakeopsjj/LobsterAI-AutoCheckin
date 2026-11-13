@@ -33,6 +33,7 @@ jobs:
         env:
           LOBSTERAI_TOKEN: ${{ secrets.LOBSTERAI_TOKEN }}
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
         run: python lobsterai_checkin.py
 
       # ⚠️ 仅在【私有仓库】中持久化令牌状态；公开仓库会跳过，避免 RT 泄露
