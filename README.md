@@ -6,6 +6,8 @@
 
 **LobsterAI 每日积分签到工具，支持桌面端凭据提取、短信登录、多账号、Token 续期与可选推送。**
 
+> 当前版本：**v1.1.1**（2026-11-04） · 最新更新：文档发行版：统一使用边界、反收费声明与六语导航
+
 [简体中文](README.md) · [English](docs/README.en.md) · [繁體中文](docs/README.zh-Hant.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [Português (BR)](docs/README.pt-BR.md)
 
 <img src="https://img.shields.io/github/v/release/L0NE-6/LobsterAI-AutoCheckin?style=for-the-badge&label=Release&color=2ea44f&logo=github" />
