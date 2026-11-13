@@ -2,8 +2,8 @@ name: 🦞 LobsterAI Daily
 
 on:
   schedule:
-    # 北京时间 09:00（GitHub cron 用 UTC，北京时间 = UTC+8）
-    - cron: "0 1 * * *"
+    # 北京时间 09:17（GitHub cron 用 UTC，北京时间 = UTC+8）
+    - cron: "17 1 * * *"
   workflow_dispatch:          # 支持手动触发
 
 permissions:
